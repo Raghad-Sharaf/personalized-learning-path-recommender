@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-
   // Handle user's choices and disable nextBtn until user makes a choice
   answers.forEach(answer => {
     answer.addEventListener('click', (e) => {
@@ -103,8 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => {
       if(count < questions.length - 1){
         count++;
-        displayQuestion()
-        // nextBtns[count].disabled = true;
+        displayQuestion();
       }
     });
   });
@@ -121,12 +119,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Send stored user data to API
   submitBtn.addEventListener('click', async(e) => {
-    // Prevet event default behavior
+    // Prevent event default behavior
     e.preventDefault();
 
     try {
       await sendData(data);
-
     } catch (error) {
       console.log('Error sending data:', error);
     }
