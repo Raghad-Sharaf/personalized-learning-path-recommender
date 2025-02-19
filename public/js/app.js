@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const startBtn = document.getElementById('start');
   const errorMessage = document.getElementById('error');
   const submitBtn = document.getElementById('submit');
-  const newInput = document.getElementById('add-field');
 
   // Initial question preview value
   let count = 0;
@@ -44,8 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
       errorMessage.style.display = 'block';
     } else {
       data.name = name.value.trim()
-      // count++;
-      // displayQuestion();
     }
   })
 
@@ -56,19 +53,39 @@ document.addEventListener('DOMContentLoaded', () => {
       const questionId = questions[count].id;
       const selectedBtn = e.target;
       const parent = selectedBtn.parentElement;
-      // data[questionId] = e.target.innerText;
-      
-      // Change selected choice
-      // const parent = e.target.parentElement;
-      if(selectedBtn.classList.contains('selected')) {
-        selectedBtn.classList.remove('selected');
-        // delete selection from data
-        delete data[questionId];
+
+      if (questionId === 'programmingBackground') {
+        // Define an array, and allow multiple selection
+        if (!data[questionId]) {
+          data[questionId] = [];
+        }
+
+        if (selectedBtn.classList.contains('selected')) {
+          selectedBtn.classList.remove('selected');
+          // Delete selection from array
+          data[questionId] = data[questionId].filter(choice => choice !== selectedBtn.innerText);;
+        } else {
+          selectedBtn.classList.add('selected');
+          // Store selected choices in the array
+          data[questionId].push(selectedBtn.innerText);
+        }
+
+        // Remove key if array is empty
+        if (data[questionId].length === 0) {
+          delete data[questionId];
+        }
       } else {
-        parent.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
-        selectedBtn.classList.add('selected');
-        // store selected data
-        data[questionId] = selectedBtn.innerText;
+        // Store one choice for the remaining questions and change selected choice
+        if (selectedBtn.classList.contains('selected')) {
+          selectedBtn.classList.remove('selected');
+          // delete selection from data
+          delete data[questionId];
+        } else {
+          parent.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
+          selectedBtn.classList.add('selected');
+          // store selected data
+          data[questionId] = selectedBtn.innerText;
+        }
       }
       
       // Enable nextBtn if choice is made
@@ -77,13 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         nextBtns[count].disabled = true;
       }
-      // Enable the corresponding next button
-      // if (count > 0 && count < nextBtns.length) {
-      //   nextBtns[count].disabled = false;
-      // }
-      // if(count >0) {
-      //   nextBtns[count].disabled = false
-      // }
     })
   })
 
