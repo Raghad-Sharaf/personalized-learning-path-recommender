@@ -54,17 +54,33 @@ document.addEventListener('DOMContentLoaded', () => {
   answers.forEach(answer => {
     answer.addEventListener('click', (e) => {
       const questionId = questions[count].id;
-      data[questionId] = e.target.innerText;
+      const selectedBtn = e.target;
+      const parent = selectedBtn.parentElement;
+      // data[questionId] = e.target.innerText;
       
       // Change selected choice
-      const parent = e.target.parentElement;
-      parent.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
-      e.target.classList.add('selected');
-
-       // Enable the corresponding next button
-       if (count > 0 && count < nextBtns.length) {
+      // const parent = e.target.parentElement;
+      if(selectedBtn.classList.contains('selected')) {
+        selectedBtn.classList.remove('selected');
+        // delete selection from data
+        delete data[questionId];
+      } else {
+        parent.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
+        selectedBtn.classList.add('selected');
+        // store selected data
+        data[questionId] = selectedBtn.innerText;
+      }
+      
+      // Enable nextBtn if choice is made
+      if (parent.querySelector('.selected')) {
         nextBtns[count].disabled = false;
-       }
+      } else {
+        nextBtns[count].disabled = true;
+      }
+      // Enable the corresponding next button
+      // if (count > 0 && count < nextBtns.length) {
+      //   nextBtns[count].disabled = false;
+      // }
       // if(count >0) {
       //   nextBtns[count].disabled = false
       // }
