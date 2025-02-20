@@ -146,10 +146,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const responseData = await response.json()
-    console.log('API Response:',responseData);
+    // console.log('API Response:',responseData);
     return responseData;
   }
 
-  // console.log(data)
   displayQuestion();
 })
